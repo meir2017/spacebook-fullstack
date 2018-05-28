@@ -5,9 +5,12 @@ class PostsRepository {
     constructor() {
         this.posts = [];
     }
+    addPostDb(response){
+        this.posts=response;
+    }
 
-    addPost(postText) {
-        this.posts.push({ text: postText, comments: [] });
+    addPost(postText,postId) {
+        this.posts.push({_id:postId, text: postText, comments: [] });
     }
 
     removePost(index) {

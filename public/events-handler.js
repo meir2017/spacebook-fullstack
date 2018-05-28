@@ -1,18 +1,45 @@
+
+
+  var tempRepository;
+  var tempRendere;
+
 class EventsHandler {
     constructor(postsRepository, postsRenderer) {
         this.postsRepository = postsRepository;
         this.postsRenderer = postsRenderer;
         this.$posts = $(".posts");
+         tempRepository=postsRepository;
+         tempRendere=postsRenderer;
     }
 
+    pageOnLode(){
+            $.ajax({
+                method:"GET",
+                url:"/posts",
+            }).then(function(response) {
+                tempRepository.addPostDb(response);
+                tempRendere.renderPosts(tempRepository.posts);
+            }).catch(function(error) {
+                console.log(error);
+            });   
+    }
     registerAddPost() {
         $('#addpost').on('click', () => {
             let $input = $("#postText");
+            let myPOST = $("#postText").val();
             if ($input.val() === "") {
                 alert("Please enter text!"); 
-            } else {
-                this.postsRepository.addPost($input.val());
-                this.postsRenderer.renderPosts(this.postsRepository.posts);
+            } else { 
+                $.ajax({
+                    method:"POST",
+                    url:"/addPost",
+                    data: {thePost:$("#postText").val()}
+                }).then(function(response) {
+                    tempRepository.addPost(myPOST,response);
+                    tempRendere.renderPosts(tempRepository.posts)
+                }).catch(function(error) {
+                    console.log(error);
+                });
                 $input.val("");
             }
             });        
@@ -21,6 +48,15 @@ class EventsHandler {
     registerRemovePost() {
         this.$posts.on('click', '.remove-post', (event) => {
             let index = $(event.currentTarget).closest('.post').index();;
+            $.ajax({
+                method:"POST",
+                url:"/deletePost",
+                data: {idPost:tempRepository.posts[index]._id}
+            }).then(function(response) {
+                console.log(response);
+            }).catch(function(error) {
+                console.log(error);
+            });
             this.postsRepository.removePost(index);
             this.postsRenderer.renderPosts(this.postsRepository.posts);
           });
@@ -46,9 +82,19 @@ class EventsHandler {
           
             let postIndex = $(event.currentTarget).closest('.post').index();
             let newComment = { text: $comment.val(), user: $user.val() };
-          
-            this.postsRepository.addComment(newComment, postIndex);
-            this.postsRenderer.renderComments(this.postsRepository.posts, postIndex);
+            $.ajax({
+                method:"POST",
+                url:"/AddComment",
+                data: {idPost:tempRepository.posts[postIndex]._id,
+                       commentText:newComment.text,
+                       userName:newComment.user
+                }
+            }).then(function(response) {
+                tempRepository.addComment(newComment, postIndex);
+                tempRendere.renderComments(tempRepository.posts, postIndex);
+            }).catch(function(error) {
+                console.log(error);
+            });
             $comment.val("");
             $user.val("");
           });
@@ -60,8 +106,19 @@ class EventsHandler {
             let $commentsList = $(event.currentTarget).closest('.post').find('.comments-list');
             let postIndex = $(event.currentTarget).closest('.post').index();
             let commentIndex = $(event.currentTarget).closest('.comment').index();
-            this.postsRepository.deleteComment(postIndex, commentIndex);
-            this.postsRenderer.renderComments(this.postsRepository.posts, postIndex);
+            $.ajax({
+                method:"POST",
+                url:"/RemoveComment",
+                data: {idPost:tempRepository.posts[postIndex]._id,
+                      index:commentIndex
+                }
+            }).then(function(response) {
+                tempRepository.deleteComment(postIndex, commentIndex);
+                tempRendere.renderComments(tempRepository.posts, postIndex);
+                console.log(response);
+            }).catch(function(error) {
+                console.log(error);
+            });
         });
     }
 }
