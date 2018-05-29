@@ -13,14 +13,3 @@ eventsHandler.registerAddComment();
 eventsHandler.registerRemoveComment();
 eventsHandler.pageOnLode();
 
-// debugger
-// $.ajax({
-//     method:"GET",
-//     url:"/posts",
-//   }).then(function(response) {
-//       debugger
-//     //console.log(response);
-//     PostsRepository.AddPost('asdasdasdasdasasdas')
-//   }).catch(function(error) {
-//       console.log(error);
-//   });

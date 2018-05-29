@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-const SERVER_PORT = 8710;
+const SERVER_PORT = 8000;
 
 mongoose.connect('mongodb://localhost/spacebookDB', function() {
   console.log("DB connection established!!!");

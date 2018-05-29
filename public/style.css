@@ -1,5 +1,8 @@
 .post {
-    padding: 20px 0;
+    border: 2px solid gray;
+    margin-top: 20px;
+    padding: 15px;
+    box-shadow: 5px 5px;
 }
 
 .btn-sm {
@@ -13,3 +16,22 @@
 .comments-container {
     display: none;
 }
+.postOption{
+    font-size: 25px;
+    /* padding: 10px; */
+
+}
+
+.remove-post,.remove-comment{
+    float: right;
+    color:red;
+}
+.toggle-comments{
+    float: left;
+    /* margin-top: -10px */
+}
+.postText{
+font-size: 20px;
+text-align: center
+}
+input{margin: 5px}
